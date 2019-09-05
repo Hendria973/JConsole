@@ -7,6 +7,7 @@ class Main {
 		c.print("Test");
 		c.print("Hello World!");
 		c.print("JConsole");
+		c.printAt("Print at", 30, 5);
 	}
 
 }

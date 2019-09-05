@@ -56,6 +56,12 @@ public class Console implements KeyListener{
 		cursor.y++;
 	}
 	
+	public void printAt(String str, int x, int y) {
+		cursor.x = x;
+		cursor.y = y;
+		print(str);
+	}
+	
 	public void keyTyped(KeyEvent e) {
 		
 	}
