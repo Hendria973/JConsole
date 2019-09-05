@@ -6,54 +6,25 @@ import java.awt.event.*;
 
 public class Console implements ActionListener{
 	private final JFrame frame;
-	private final JTextArea output;
-	private final JTextField input;
+	private final JPanel[][] cells = new JPanel[40][80];
 	
 	public Console() {
-		frame = new JFrame("Console");
-		output = new JTextArea(30, 50);
-		output.setEditable(false);
-		output.setBorder(BorderFactory.createTitledBorder("output"));
-		output.setBackground(Color.black);
-		output.setForeground(Color.white);
-		input = new JTextField();
-		input.setBackground(Color.black);
-		input.setForeground(Color.WHITE);
-		input.setBorder(BorderFactory.createTitledBorder("input"));
-		input.addActionListener(this);
-		input.setEditable(false);
+		frame = new JFrame("JConsole");
+		frame.setLayout(new GridLayout(40, 80));
+		for (int i = 0; i<40; i++) {
+			for (int j = 0; j<80; j++) {
+				cells[i][j] = new JPanel();
+				cells[i][j].setBackground(Color.blue);
+				cells[i][j].setPreferredSize(new Dimension(10, 10));
+				frame.add(cells[i][j]);
+			}
+		}
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(output, BorderLayout.NORTH);
-		frame.add(input, BorderLayout.SOUTH);
 		frame.pack();
 		frame.setVisible(true);
 	}
-	public void print(String str) {
-		output.append(str+'\n');
-	}
-	
-	public String input() {
-		String inp;
-		input.setEditable(true);
-		input.setBackground(Color.gray);
-		do {
-			input.setBackground(Color.GRAY);
-		} while(input.isEditable());
-		input.setBackground(Color.black);
-		inp = input.getText();
-		input.setText("");
-		output.append(inp+'\n');
-		return inp;
-	}
-	
-	public String input(String str) {
-		output.append(str);
-		return input();
-	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if (input.isEditable()) {
-			input.setEditable(false);
-		}
+		
 	}
 }
