@@ -1,2 +1,2 @@
 # JConsole
- Custom java console
+ Custom java console for basic TUI on all platforms.
