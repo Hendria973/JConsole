@@ -67,10 +67,6 @@ public class Console implements KeyListener{
 		print(str);
 	}
 	
-	public String input() {
-		return "";
-	}
-	
 	public void addListener(keyEvents o) {
 		listeners.add(o);
 	}
