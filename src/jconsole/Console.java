@@ -26,7 +26,7 @@ public class Console implements KeyListener{
 			for (int j = 0; j<80; j++) {
 				cells[i][j] = new JPanel();
 				cells[i][j].setBackground(Color.blue);
-				cells[i][j].setPreferredSize(new Dimension(9, 18));
+				cells[i][j].setPreferredSize(new Dimension(12, 22));
 				frame.add(cells[i][j]);
 			}
 		}

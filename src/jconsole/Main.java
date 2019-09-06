@@ -8,6 +8,7 @@ class Main {
 		c.print("Hello World!");
 		c.print("JConsole");
 		c.printAt("Print at", 30, 5);
+		c.printAt("Printing over it", 0, 0);
 	}
 
 }
