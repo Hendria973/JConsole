@@ -3,11 +3,14 @@ package jconsole;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 
 public class Console implements KeyListener{
 	private final JFrame frame;
 	private final JPanel[][] cells = new JPanel[40][80];
 	private Location cursor;
+	private ArrayList<keyEvents> listeners = new ArrayList<keyEvents>();
 	
 	class Location {
 		public int x;
@@ -22,6 +25,7 @@ public class Console implements KeyListener{
 		cursor = new Location(0, 0);
 		frame = new JFrame("JConsole");
 		frame.setLayout(new GridLayout(36, 80));
+		frame.addKeyListener(this);
 		for (int i = 0; i<36; i++) {
 			for (int j = 0; j<80; j++) {
 				cells[i][j] = new JPanel();
@@ -44,6 +48,7 @@ public class Console implements KeyListener{
 			else {
 				cells[cursor.y][cursor.x].removeAll();
 				cells[cursor.y][cursor.x].revalidate();
+				cells[cursor.y][cursor.x].repaint();
 				cells[cursor.y][cursor.x].add(new JLabel(""+c));
 			}
 			cursor.x++;
@@ -62,13 +67,41 @@ public class Console implements KeyListener{
 		print(str);
 	}
 	
+	public String input() {
+		return "";
+	}
+	
+	public void addListener(keyEvents o) {
+		listeners.add(o);
+	}
+	
+	private void notifyListeners(KeyEvent e, int type) {
+		for (keyEvents listener : listeners) {
+			if (type == 0) {
+				listener.keyTyped(e);
+			}
+			else if (type == 1) {
+				listener.keyPressed(e);
+			}
+			else if (type == 2) {
+				listener.keyReleased(e);
+			}
+		}
+	}
+	
 	public void keyTyped(KeyEvent e) {
-		
+		notifyListeners(e, 0);
 	}
 	public void keyPressed(KeyEvent e) {
-		
+		notifyListeners(e, 1);
 	}
 	public void keyReleased(KeyEvent e) {
-		
+		notifyListeners(e, 2);
 	}
+}
+
+interface keyEvents {
+	public void keyTyped(KeyEvent e);
+	public void keyPressed(KeyEvent e);
+	public void keyReleased(KeyEvent e);
 }
