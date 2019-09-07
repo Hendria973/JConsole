@@ -5,12 +5,35 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-
 public class Console implements KeyListener{
 	private final JFrame frame;
 	private final JPanel[][] cells = new JPanel[40][80];
 	private Location cursor;
 	private ArrayList<keyEvents> listeners = new ArrayList<keyEvents>();
+	
+	class CharBuffer {
+		private char[] buffer;
+		public CharBuffer() {
+			buffer = new char[1];
+		}
+		
+		public CharBuffer(char[] c) {
+			buffer = c;
+		}
+		
+		public void add(char c) {
+			char[] buff = new char[buffer.length+1];
+			for (int i = 0; i<buffer.length; i++) {
+				buff[i] = buffer[i];
+			}
+			buff[buff.length-1] = c;
+			buffer = buff;
+		}
+		
+		public char getChar(int index) {
+			return buffer[index];
+		}
+	}
 	
 	class Location {
 		public int x;
@@ -69,6 +92,9 @@ public class Console implements KeyListener{
 	
 	public void addListener(keyEvents o) {
 		listeners.add(o);
+	}
+	
+	public void test() {
 	}
 	
 	private void notifyListeners(KeyEvent e, int type) {

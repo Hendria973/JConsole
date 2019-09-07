@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 class Main {
 	public static void main(String[] args) {
 		Test t = new Test();
+		t.test();
 	}
 	
 
@@ -16,9 +17,12 @@ class Test implements keyEvents {
 		c.addListener(this);
 	}
 	
+	public void test() {
+		c.test();
+	}
+	
 	public void keyTyped(KeyEvent e) {
-		c.printAt(""+e.getKeyChar(), 0, 0);
-		System.out.println(e.getKeyChar());
+		
 	}
 	public void keyPressed(KeyEvent e) {
 		
