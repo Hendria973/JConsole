@@ -10,15 +10,32 @@ public class Console implements KeyListener{
 	private final JPanel[][] cells = new JPanel[40][80];
 	private Location cursor;
 	private ArrayList<keyEvents> listeners = new ArrayList<keyEvents>();
+	private boolean inEnabled = false;
+	private boolean bufferAvailable = false;
+	private CharBuffer inputBuffer = new CharBuffer();
+	
 	
 	class CharBuffer {
 		private char[] buffer;
+		
 		public CharBuffer() {
-			buffer = new char[1];
+			buffer = new char[0];
 		}
 		
 		public CharBuffer(char[] c) {
 			buffer = c;
+		}
+		
+		public int length() {
+			return buffer.length;
+		}
+		
+		public boolean isEmpty() {
+			if (buffer.length == 0) {
+				return true;
+			}
+			else
+				return false;
 		}
 		
 		public void add(char c) {
@@ -30,8 +47,27 @@ public class Console implements KeyListener{
 			buffer = buff;
 		}
 		
+		public void remove(int index) {
+			CharBuffer buff = new CharBuffer();
+			for (int i = 0; i<buffer.length;i++) {
+				if (i == index) {
+					continue;
+				}
+				else
+					buff.add(buffer[i]);
+			}
+		}
+		
 		public char getChar(int index) {
 			return buffer[index];
+		}
+		
+		public String getString() {
+			String str = "";
+			for (char c : buffer) {
+				str = str+c;
+			}
+			return str;
 		}
 	}
 	
@@ -94,7 +130,13 @@ public class Console implements KeyListener{
 		listeners.add(o);
 	}
 	
-	public void test() {
+	public String input() {
+		inEnabled = true;
+		while (inEnabled) {
+			System.out.println(inputBuffer.getString());
+		}
+		System.out.println("Done with string: " + inputBuffer.getString());
+		return inputBuffer.getString();
 	}
 	
 	private void notifyListeners(KeyEvent e, int type) {
@@ -112,10 +154,28 @@ public class Console implements KeyListener{
 	}
 	
 	public void keyTyped(KeyEvent e) {
-		notifyListeners(e, 0);
+		if (inEnabled) {
+			if (bufferAvailable) {
+				inputBuffer.add(e.getKeyChar());
+				bufferAvailable = false;
+			}
+		}
+		else 
+			notifyListeners(e, 0);
 	}
 	public void keyPressed(KeyEvent e) {
-		notifyListeners(e, 1);
+		if (inEnabled) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				inEnabled = false;
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+				inputBuffer.remove(inputBuffer.length()-1);
+			}
+			else
+				bufferAvailable = true;
+		}
+		else
+			notifyListeners(e, 1);
 	}
 	public void keyReleased(KeyEvent e) {
 		notifyListeners(e, 2);
